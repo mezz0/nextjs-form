@@ -31,6 +31,17 @@ const FormWrapper = styled.div`
     color: #262626;
     margin: 0 0 20px;
   }
+
+  p {
+    text-align: center;
+
+    &.error {
+      color: red;
+    }
+    &.success {
+      font-size: 20px;
+    }
+  }
 `
 const StyledForm = styled.form`
   display: flex;
@@ -78,10 +89,19 @@ export default function IndexPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null)
   const [success, setSuccess] = useState(false)
+  const [ registered, setRegistered ] = useState([]);
+  const [ showData, setShowData ] = useState(false);
 
   const onSubmit = async (event) => {
+    const userData = {
+      emailAddress: event.target.email.value,
+      mobileNumber: event.target.tel.value
+    }
+
     event.preventDefault()
+    setSuccess(false)
     setLoading(true)
+    setError(null)
 
     const res = await fetch('api/waiting-list', {
       body: JSON.stringify({
@@ -100,7 +120,17 @@ export default function IndexPage() {
       setError(result.message)
     }
     if (result.status === 'success') {
-      setSuccess(true)
+
+      function add(arr, userData) {
+        const found = arr.some(el => el.emailAddress === userData.emailAddress || el.mobileNumber === userData.mobileNumber );
+        if (!found) {
+          setSuccess(true)
+          return setRegistered([...registered, userData]);
+        } else {
+          setError('Already added')
+        }
+      }
+      add(registered, userData)
     }
     setLoading(false)
 
@@ -127,11 +157,15 @@ export default function IndexPage() {
             }
           </ButtonHolder>
         </StyledForm>
-        <p>{error}</p>
-        <p>
+        <p className='error'>{error}</p>
+        <p className='success'>
           {success && 'You have been added to the waiting list'}
         </p>
       </FormWrapper>
+      <div>
+        <button onClick={() => setShowData(!showData)}>Show Data</button>
+        {showData && <pre>{JSON.stringify(registered, null, 2)}</pre>}
+      </div>
     </Wrapper>
   );
 }
