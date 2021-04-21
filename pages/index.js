@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styled, { keyframes, createGlobalStyle } from 'styled-components';
 import { VscLoading } from 'react-icons/vsc';
+import classNames from "classnames";
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -95,6 +96,13 @@ export default function IndexPage() {
   const [success, setSuccess] = useState(false)
   const [ registered, setRegistered ] = useState([]);
   const [ showData, setShowData ] = useState(false);
+  const successClass = classNames("success", {
+    "active": !!success,
+  });
+  const errorClass = classNames("error", {
+    "active": error,
+  });
+
 
   const onSubmit = async (event) => {
     const userData = {
@@ -161,8 +169,8 @@ export default function IndexPage() {
             }
           </ButtonHolder>
         </StyledForm>
-        <p className={`error ${error ? 'active' : ''}`}>{error}</p>
-        <p className={`success ${success ? 'success' : ''}`}>
+        <p className={errorClass}>{error}</p>
+        <p className={successClass}>
           {success && 'You have been added to the waiting list'}
         </p>
       </FormWrapper>
