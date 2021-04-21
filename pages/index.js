@@ -19,17 +19,17 @@ const Wrapper = styled.div`
 
 const FormWrapper = styled.div`
   background-color: white;
-  padding: 40px;
   width: 100%;
   max-width: 400px;
   margin: auto;
+  margin-bottom: 20px;
 
   h1 {
     text-align: center;
     font-size: 2.3rem;
     line-height: 1.4;
     color: #262626;
-    margin: 0 0 20px;
+    margin: 20px;
   }
 
   p {
@@ -41,11 +41,15 @@ const FormWrapper = styled.div`
     &.success {
       font-size: 20px;
     }
+    &.active {
+      padding: 10px 40px;
+    }
   }
 `
 const StyledForm = styled.form`
   display: flex;
   flex-direction: column;
+  padding: 10px 40px;
 `
 
 const StyledInput = styled.input`
@@ -157,8 +161,8 @@ export default function IndexPage() {
             }
           </ButtonHolder>
         </StyledForm>
-        <p className='error'>{error}</p>
-        <p className='success'>
+        <p className={`error ${error ? 'active' : ''}`}>{error}</p>
+        <p className={`success ${success ? 'success' : ''}`}>
           {success && 'You have been added to the waiting list'}
         </p>
       </FormWrapper>
