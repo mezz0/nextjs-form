@@ -127,7 +127,7 @@ export default function IndexPage() {
           setSuccess(true)
           return setRegistered([...registered, userData]);
         } else {
-          setError('Already added')
+          setError('You have already been added to the waiting list')
         }
       }
       add(registered, userData)
